@@ -1,11 +1,13 @@
 package com.camaign.service.impl;
 
+import com.camaign.dto.RespStudent;
 import com.camaign.dto.StudentDto;
 import com.camaign.entity.Student;
 import com.camaign.repository.StudentRepository;
 import com.camaign.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.pulsar.PulsarProperties;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -17,11 +19,12 @@ import java.util.stream.Collectors;
 public class StudentServiceImpl implements StudentService {
 
     @Autowired
-    StudentRepository repository ;
+    StudentRepository repository;
+
     @Override
     public StudentDto CreateStudent(StudentDto studentDto) {
 
-        StudentDto dto =  MaptoDto(studentDto) ;
+        StudentDto dto = MaptoDto(studentDto);
 //        dto.setDepartment(studentDto.getDepartment());
 //        dto.setName(studentDto.getName());
 //        dto.setEmail(studentDto.getEmail());
@@ -37,7 +40,7 @@ public class StudentServiceImpl implements StudentService {
 
         Student ent =
 //      repository.save(student) ;
-      repository.save(MapToEntity(dto)) ;
+                repository.save(MapToEntity(dto));
 
 //         StudentDto resp = new StudentDto() ;
 //         resp.setSubjects(ent.getSubjects());
@@ -53,33 +56,33 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentDto FindById(String id) {
         Optional<Student> st =
-        repository.findById(id) ;
+                repository.findById(id);
 
 
         return MapToResp(st);
     }
 
     @Override
-    public List<StudentDto> Alldocument() {
+    public List<RespStudent> Alldocument(int pageNo) {
+        Pageable pageable = PageRequest.of(pageNo-1, 2) ;
 
-        List<Student> list = repository.findAll() ;
-
+        List<Student> list = repository.findAll(pageable).getContent();
 
 
         return list.stream()
 
                 .sorted(Comparator.comparing(Student::getName))
                 .map(ent -> {
-            return MapToResp(Optional.ofNullable(ent));
+                    return MapToResp(Optional.ofNullable(ent), pageNo);
 //            StudentDto dt = new StudentDto();
 //            dt.setName(ent.getName());
 //            dt.setId(ent.getId());
 //            dt.setSubjects(ent.getSubjects());
 //            dt.setDepartment(ent.getDepartment());
 //            dt.getEmail()ent.getEmail();
-        })
+                })
 
-                .collect(Collectors.toList()) ;
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -91,30 +94,45 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<StudentDto> findByName(String name) {
         List<Student> list =
-        repository.findByName(name) ;
+                repository.findByName(name);
 
         return list.stream()
                 .sorted(Comparator.comparing(Student::getName))
                 .map(student -> {
                     return MapToResp(Optional.of(student));
-                        })
-                .collect(Collectors.toList()) ;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<StudentDto> findByNameAndEmail(String name, String email) {
 
 
-
-        List<Student> list = repository.findByNameAndEmail(name,email) ;
+        List<Student> list = repository.findByNameAndEmail(name, email);
 
         return list.stream()
                 .sorted(Comparator.comparing(Student::getName))
-                .map( st -> {
+                .map(st -> {
                     return MapToResp(Optional.of(st));
-                        })
-                .collect(Collectors.toList()) ;
+                })
+                .collect(Collectors.toList());
     }
+
+    @Override
+    public List<StudentDto> findByNameOrEmail(String name, String email) {
+
+
+        List<Student> list = repository.findByNameOrEmail(name, email) ;
+
+        return list.stream()
+                .sorted(Comparator.comparing(Student::getName))
+                .map(st ->
+                         {
+                             return MapToResp(Optional.of(st));
+        })
+                .collect(Collectors.toList());
+    }
+
 
     public StudentDto MaptoDto(StudentDto studentDto){
 
@@ -123,7 +141,6 @@ public class StudentServiceImpl implements StudentService {
         dto.setName(studentDto.getName());
         dto.setEmail(studentDto.getEmail());
         dto.setSubjects(studentDto.getSubjects());
-
 
         return dto ;
     }
@@ -152,6 +169,26 @@ public class StudentServiceImpl implements StudentService {
         resp.setName(ent.get().getName());
 
         return  resp ;
+
+    }
+
+//    public StudentDto MapToResp(Optional<Student> ent,int pageNo) {
+    public RespStudent MapToResp(Optional<Student> ent, int pageNo) {
+
+
+
+        StudentDto resp = new StudentDto() ;
+        resp.setSubjects(ent.get().getSubjects());
+        resp.setId(ent.get().getId());
+        resp.setDepartment(ent.get().getDepartment());
+        resp.setEmail(ent.get().getEmail());
+        resp.setName(ent.get().getName());
+
+        RespStudent respStudent = new RespStudent();
+        respStudent.setStudentDto(resp);
+        respStudent.setPageNo(pageNo);
+
+        return  respStudent ;
 
     }
 

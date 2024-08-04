@@ -1,9 +1,12 @@
 package com.camaign.controller;
 
 
+import com.camaign.dto.RespStudent;
 import com.camaign.dto.StudentDto;
 import com.camaign.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +32,9 @@ public class StudentController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<StudentDto>> getAll(){
+    public ResponseEntity<List<RespStudent>> getAll(@RequestParam("pageNo") int pageNo){
 
-        return new ResponseEntity<>(service.Alldocument(), HttpStatus.valueOf(200));
+        return new ResponseEntity<>(service.Alldocument(pageNo), HttpStatus.valueOf(200));
     }
 
     @PostMapping("/update")
@@ -54,4 +57,14 @@ public class StudentController {
 
         return new ResponseEntity<>(service.findByNameAndEmail(name, email), HttpStatus.OK) ;
     }
+
+    @GetMapping("/findByNameOrEmail")
+    public ResponseEntity<List<StudentDto>> findByNameOrEmail(@RequestParam ("name") String name,
+                                                            @RequestParam("email") String email){
+
+        return new ResponseEntity<>(service.findByNameOrEmail(name, email), HttpStatus.OK) ;
+    }
+
+
+
 }
