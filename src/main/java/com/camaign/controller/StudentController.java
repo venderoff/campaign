@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,6 +86,13 @@ public class StudentController {
     public ResponseEntity<List<StudentDto>> subjectName(@RequestParam ("name") String name){
 
         return new ResponseEntity<>(service.findBySubjects(name), HttpStatus.valueOf(200)) ;
+    }
+
+    //is like query
+    @GetMapping("/isLike")
+    public ResponseEntity<List<StudentDto>> IsLike(@RequestParam("email") String email){
+
+        return new ResponseEntity<>(service.emailIsLike(email), HttpStatus.OK) ;
     }
 
 }

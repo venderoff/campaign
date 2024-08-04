@@ -36,5 +36,8 @@ public interface StudentService {
 
     //Query with Array Valyes
     public List<StudentDto> findBySubjects(String subName);
+
+    // Email is like
+    public List<StudentDto> emailIsLike(String email) ;
 }
 
