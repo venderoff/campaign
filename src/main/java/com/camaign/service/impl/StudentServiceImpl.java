@@ -160,6 +160,18 @@ public class StudentServiceImpl implements StudentService {
         .collect(Collectors.toList()) ;
     }
 
+    @Override
+    public List<StudentDto> findBySubjects(String subName) {
+
+        List<Student> list = repository.findBySubjectsSubjectName(subName) ;
+
+        return list.stream()
+                .map(st -> {
+                    return MapToResp(Optional.of(st)) ;
+                })
+                .collect(Collectors.toList());
+    }
+
 
     public StudentDto MaptoDto(StudentDto studentDto){
 

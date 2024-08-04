@@ -33,5 +33,8 @@ public interface StudentService {
 
     //subdocument
     public List<StudentDto> findByDepartName(String departName) ;
+
+    //Query with Array Valyes
+    public List<StudentDto> findBySubjects(String subName);
 }
 

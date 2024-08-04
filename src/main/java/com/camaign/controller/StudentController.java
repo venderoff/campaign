@@ -79,4 +79,12 @@ public class StudentController {
 
         return new ResponseEntity<>(service.findByDepartName(deptName), HttpStatus.valueOf(200));
     }
+
+    // Cearch  by arrays
+    @GetMapping("/subject")
+    public ResponseEntity<List<StudentDto>> subjectName(@RequestParam ("name") String name){
+
+        return new ResponseEntity<>(service.findBySubjects(name), HttpStatus.valueOf(200)) ;
+    }
+
 }

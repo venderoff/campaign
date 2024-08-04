@@ -22,4 +22,6 @@ public interface StudentRepository extends MongoRepository<Student,String> {
 
     // subdocument
     List<Student> findByDepartmentDepartmentName(String departName) ;
+
+    List<Student> findBySubjectsSubjectName(String subName) ;
 }
