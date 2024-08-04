@@ -8,6 +8,7 @@ import com.camaign.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -102,6 +103,19 @@ public class StudentServiceImpl implements StudentService {
                     return MapToResp(Optional.of(student));
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StudentDto> sorting() {
+        Sort sort = Sort.by(Sort.Direction.ASC,  "email","name") ;
+
+        List<Student> list = repository.findAll(sort) ;
+        return list.stream()
+                .map(st ->
+                 {
+           return         MapToResp(Optional.ofNullable(st)) ;
+                })
+                .collect(Collectors.toList()) ;
     }
 
     @Override

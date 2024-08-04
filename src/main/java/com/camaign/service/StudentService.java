@@ -19,6 +19,9 @@ public interface StudentService {
     //find by name
     public List<StudentDto> findByName(String name) ;
 
+    //sorting by name
+    public List<StudentDto> sorting() ;
+
 
 
      //AND query
