@@ -184,6 +184,18 @@ public class StudentServiceImpl implements StudentService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<StudentDto> startsWith(String name) {
+
+        List<Student> list = repository.findByNameStartsWith(name) ;
+        return list.stream()
+                .map(st ->
+                {
+                    return MapToResp(Optional.of(st)) ;
+                })
+                .collect(Collectors.toList());
+    }
+
 
     public StudentDto MaptoDto(StudentDto studentDto){
 

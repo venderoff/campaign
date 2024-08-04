@@ -39,5 +39,8 @@ public interface StudentService {
 
     // Email is like
     public List<StudentDto> emailIsLike(String email) ;
+
+    //Starts with
+    public List<StudentDto> startsWith(String name) ;
 }
 

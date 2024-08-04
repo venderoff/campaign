@@ -28,4 +28,8 @@ public interface StudentRepository extends MongoRepository<Student,String> {
 
     //like query
     List<Student> findByEmailIsLike (String email) ;
+
+    // starts with
+    List<Student> findByNameStartsWith (String name);
+
 }

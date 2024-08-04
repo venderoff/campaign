@@ -95,4 +95,12 @@ public class StudentController {
         return new ResponseEntity<>(service.emailIsLike(email), HttpStatus.OK) ;
     }
 
+    //starts with
+    @GetMapping("/startsWith")
+    public ResponseEntity<List<StudentDto>> startsWith(@RequestParam("name") String name) {
+
+        return new ResponseEntity<>(service.startsWith(name), HttpStatus.OK) ;
+
+    }
+
 }
