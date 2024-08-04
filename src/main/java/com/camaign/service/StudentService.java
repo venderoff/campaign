@@ -30,5 +30,8 @@ public interface StudentService {
 
     // OR Query
     public List<StudentDto> findByNameOrEmail(String name, String email) ;
+
+    //subdocument
+    public List<StudentDto> findByDepartName(String departName) ;
 }
 

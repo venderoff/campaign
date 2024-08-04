@@ -147,6 +147,19 @@ public class StudentServiceImpl implements StudentService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<StudentDto> findByDepartName(String departName) {
+
+        List<Student> list = repository.findByDepartmentDepartmentName(departName) ;
+
+        return list.stream()
+                .map(st ->
+                        {
+                            return MapToResp(Optional.of(st));
+        })
+        .collect(Collectors.toList()) ;
+    }
+
 
     public StudentDto MaptoDto(StudentDto studentDto){
 

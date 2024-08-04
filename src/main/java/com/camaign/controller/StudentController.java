@@ -72,4 +72,11 @@ public class StudentController {
 
  }
 
+ // by subdocument
+
+    @GetMapping("/dept")
+    public ResponseEntity<List<StudentDto>> findByDepartment(@RequestParam("depatName") String deptName) {
+
+        return new ResponseEntity<>(service.findByDepartName(deptName), HttpStatus.valueOf(200));
+    }
 }
